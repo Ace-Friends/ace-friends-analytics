@@ -1,0 +1,21 @@
+name: ace-friends-analytics
+
+services:
+  analytics:
+    build:
+      context: .
+      target: production
+    init: true
+    restart: unless-stopped
+    environment:
+      ANALYTICS_HOST: 0.0.0.0
+      ANALYTICS_PORT: "15700"
+      ANALYTICS_LOG_LEVEL: ${ANALYTICS_LOG_LEVEL:-info}
+    ports:
+      - "127.0.0.1:${ANALYTICS_PORT:-15700}:15700"
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
